@@ -10,16 +10,17 @@
 
 ### Currently Available
 
+- Custom Provider
 - AWS Commercial
 - AWS GovCloud
 - Harvester
 - Digital Ocean
 - VMWare vSphere
-- Custom
+- Microsoft Azure
 
 ### Pending Validation
 
-- Microsoft Azure
+- None
 
 ## Installing the Chart
 
@@ -94,6 +95,15 @@ kubectl annotate secret -n cattle-global-data digitalocean-creds provisioning.ca
 kubectl create secret -n cattle-global-data generic vsphere-creds --from-literal=vmwarevspherecredentialConfig-username=$USERNAME --from-literal=vmwarevspherecredentialConfig-password=$PASSWORD --from-literal=vmwarevspherecredentialConfig-vcenter=$VCENTER_HOST --from-literal=vmwarevspherecredentialConfig-vcenterPort=$VCENTER_PORT
 
 kubectl annotate secret -n cattle-global-data vsphere-creds provisioning.cattle.io/driver=vmwarevsphere
+```
+
+#### For Microsoft Azure Credentials
+
+```bash
+# ENVIRONMENT is AzurePublicCloud or AzureUSGovernmentCloud, TENANTID is optional
+kubectl create secret -n cattle-global-data generic --type provisioning.cattle.io/cloud-credential azure-creds --from-literal=azurecredentialConfig-clientId=$CLIENTID --from-literal=azurecredentialConfig-clientSecret=$CLIENTSECRET --from-literal=azurecredentialConfig-environment=$ENVIRONMENT --from-literal=azurecredentialConfig-subscriptionId=$SUBSCRIPTIONID --from-literal=azurecredentialConfig-tenantId=$TENANTID
+
+kubectl annotate secret -n cattle-global-data azure-creds provisioning.cattle.io/driver=azure
 ```
 
 ### Registry Credentials

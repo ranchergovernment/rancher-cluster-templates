@@ -1,0 +1,288 @@
+# be sure to add all "required" values...
+
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+# https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/use-new-nodes-in-an-infra-provider
+cloudprovider: azure # required
+
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName: azure-creds # required
+
+# rancher manager url
+rancher:
+  cattle:
+    url: # required (example: rancher.example.com)
+
+# cluster values
+cluster:
+  # labels:
+    # key: value
+  # annotations:
+    # key: value
+  name: rke2-cluster-azure
+  config:
+    kubernetesVersion: v1.33.5+rke2r1 # https://github.com/rancher/rke2/releases
+    enableNetworkPolicy: true
+    localClusterAuthEndpoint:
+      enabled: false
+    # additionalManifests: |-
+    #   apiVersion: v1
+    #   kind: Pod
+    #   metadata:
+    #     name: example-manifest
+    #   spec:
+    #     containers:
+    #     - name: example
+    #       image: example:1.0.0
+    #       ports:
+    #       - containerPort: 80
+    # agentEnvVars:
+      # - name: key
+      #   value: value
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
+    # etcd:
+    #   disableSnapshots: false
+    #   snapshotRetention: 5
+    #   snapshotScheduleCron: 0 */5 * * *
+    #   s3:
+    #     bucket: rancherbackups
+    #     cloudCredentialSecretName: minio-creds
+    #     folder: rancher
+    #     region: dummyregion
+    #     retention: 5
+    #     skipSSLVerify: false
+    #     endpoint: # minio.example.com
+    #     endpointCA: |-
+    #       -----BEGIN CERTIFICATE-----
+    #       -----END CERTIFICATE-----
+    globalConfig:
+      systemDefaultRegistry: docker.io # default registry
+      cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      docker: false
+      # token: ''
+      # tls_san:
+        # - url
+        # - ip
+      # disable:
+        # - rke2-coredns
+        # - rke2-ingress-nginx
+        # - rke2-metrics-server
+      disable_scheduler: false
+      disable_cloud_controller: false
+      disable_kube_proxy: false
+      etcd_expose_metrics: false
+      profile: '' # cis, cis-1.23, or cis-1.6 # https://docs.rke2.io/security/hardening_guide
+      selinux: false # rke2-selinux and container-selinux be installed on the nodes # https://docs.rke2.io/security/selinux
+      secrets_encryption: false
+      write_kubeconfig_mode: 0600
+      use_service_account_credentials: false
+      protect_kernel_defaults: false
+      cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+      # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
+      # kube_controller_manager_arg:
+        # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+      # kube_scheduler_arg:
+        # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # kube_apiserver_arg:
+        # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+      # kube_proxy_arg:
+        # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
+      # kubelet_arg:
+        # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    # controlPlaneConfig:
+      # same options as globalConfig
+      # only will apply to the control plane nodes
+    # workerConfig:
+      # same options as globalConfig
+      # only will apply to the worker nodes
+    registries:
+      enabled: false
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+
+# node and nodepool(s) values
+nodepools:
+  - name: control-plane-nodes
+    # displayName: cp-nodes
+    quantity: 3
+    etcd: true
+    controlplane: true
+    worker: false
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    # clientId: '' # only needed if not using cloudCredentialSecretName
+    # clientSecret: '' # only needed if not using cloudCredentialSecretName
+    # environment: '' # only needed if not using cloudCredentialSecretName (AzurePublicCloud or AzureUSGovernmentCloud)
+    # subscriptionId: '' # only needed if not using cloudCredentialSecretName
+    # tenantId: '' # only needed if not using cloudCredentialSecretName
+    location: # required (example: eastus)
+    resourceGroup: # required (example: rke2-cluster-rg) - created if missing
+    image: # required (example: canonical:ubuntu-24_04-lts:server-gen1:latest) - publisher:offer:sku:version or the ARM resource ID of a custom image
+    size: # required (example: Standard_D4s_v5)
+    sshUser: # required (example: azureuser)
+    diskSize: 150 # GiB
+    managedDisks: true
+    storageType: Standard_LRS
+    vnet: '' # (example: rke2-cluster-vnet) - [resourcegroup:]name, created if missing
+    subnet: '' # (example: rke2-cluster-subnet) - created if missing
+    subnetPrefix: '' # (example: 192.168.0.0/16) - RFC 1918 CIDR, only used when creating the subnet
+    # nsg: '' # name or resource ID of an existing NSG - default creates a new NSG per machine
+    # openPort: # port or port/protocol (tcp, udp, *)
+    # - "80"
+    # - "443/tcp"
+    # availabilitySet: ''
+    # availabilityZone: '' # single zone (example: 1) - requires managedDisks and enablePublicIpStandardSku
+    # faultDomainCount: 3
+    # updateDomainCount: 5
+    # dns: '' # unique DNS label for the public IP address
+    # dockerPort: 2376 # port of the Docker rule added to the created NSG, RKE2 does not use Docker
+    # privateIpAddress: ''
+    usePrivateIp: false
+    noPublicIp: false
+    staticPublicIp: false
+    # acceleratedNetworking: false
+    # enablePublicIpStandardSku: false
+    # plan: '' # publisher:product:plan
+    # tags: '' # comma-separated key,value pairs (example: key1,value1,key2,value2)
+    # customData: |
+      #cloud-config
+
+  - name: worker-nodes
+    # displayName: wk-nodes
+    quantity: 3
+    etcd: false
+    controlplane: false
+    worker: true
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    # clientId: '' # only needed if not using cloudCredentialSecretName
+    # clientSecret: '' # only needed if not using cloudCredentialSecretName
+    # environment: '' # only needed if not using cloudCredentialSecretName (AzurePublicCloud or AzureUSGovernmentCloud)
+    # subscriptionId: '' # only needed if not using cloudCredentialSecretName
+    # tenantId: '' # only needed if not using cloudCredentialSecretName
+    location: # required (example: eastus)
+    resourceGroup: # required (example: rke2-cluster-rg) - created if missing
+    image: # required (example: canonical:ubuntu-24_04-lts:server-gen1:latest) - publisher:offer:sku:version or the ARM resource ID of a custom image
+    size: # required (example: Standard_D4s_v5)
+    sshUser: # required (example: azureuser)
+    diskSize: 150 # GiB
+    managedDisks: true
+    storageType: Standard_LRS
+    vnet: '' # (example: rke2-cluster-vnet) - [resourcegroup:]name, created if missing
+    subnet: '' # (example: rke2-cluster-subnet) - created if missing
+    subnetPrefix: '' # (example: 192.168.0.0/16) - RFC 1918 CIDR, only used when creating the subnet
+    # nsg: '' # name or resource ID of an existing NSG - default creates a new NSG per machine
+    # openPort: # port or port/protocol (tcp, udp, *)
+    # - "80"
+    # - "443/tcp"
+    # availabilitySet: ''
+    # availabilityZone: '' # single zone (example: 1) - requires managedDisks and enablePublicIpStandardSku
+    # faultDomainCount: 3
+    # updateDomainCount: 5
+    # dns: '' # unique DNS label for the public IP address
+    # dockerPort: 2376 # port of the Docker rule added to the created NSG, RKE2 does not use Docker
+    # privateIpAddress: ''
+    usePrivateIp: false
+    noPublicIp: false
+    staticPublicIp: false
+    # acceleratedNetworking: false
+    # enablePublicIpStandardSku: false
+    # plan: '' # publisher:product:plan
+    # tags: '' # comma-separated key,value pairs (example: key1,value1,key2,value2)
+    # customData: |
+      #cloud-config
+
+# addons values
+addons:
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-monitoring/104.1.2%2Bup57.0.3
+  monitoring:
+    enabled: false
+    # version: 104.1.2+up57.0.3
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-logging/104.1.2%2Bup4.8.0
+  logging:
+    enabled: false
+    # version: 104.1.2+up4.8.0
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/longhorn/104.2.1%2Bup1.7.2
+  longhorn:
+    enabled: false
+    # version: 104.2.1+up1.7.2
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/neuvector/104.0.2%2Bup2.8.0
+  neuvector:
+    enabled: false
+    # version: 104.0.2+up2.8.0
+    # values:
+      # values here
