@@ -441,8 +441,6 @@
 #     type: enum
 #     options:
 #       - AzurePublicCloud
-#       - AzureGermanCloud
-#       - AzureChinaCloud
 #       - AzureUSGovernmentCloud
 #     description: 'Azure environment'
 #     show_if: cloudprovider=azure
