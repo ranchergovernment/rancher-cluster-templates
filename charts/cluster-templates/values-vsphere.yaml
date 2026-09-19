@@ -28,12 +28,6 @@ cluster:
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
-    # chartValues: |-
-    #   harvester-cloud-provider:
-    #     cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
-    #     global:
-    #       cattle:
-    #         clusterName: {{ .Values.cluster.name }}
     # additionalManifests: |-
     #   apiVersion: v1
     #   kind: Pod
@@ -50,7 +44,6 @@ cluster:
       #   value: value
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
-    # defaultPodSecurityPolicyTemplateName: ''
     # etcd:
     #   disableSnapshots: false
     #   snapshotRetention: 5
@@ -69,8 +62,8 @@ cluster:
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
-      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
-      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # cluster_cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service_cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
       docker: false
       # token: ''
       # tls_san:
@@ -90,12 +83,16 @@ cluster:
       write_kubeconfig_mode: 0600
       use_service_account_credentials: false
       protect_kernel_defaults: false
+      # audit_policy_file: '' # path to the audit policy file on the nodes
       cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
       # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
       # kube_controller_manager_arg:
         # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       # kube_scheduler_arg:
         # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # etcd_arg:
+        # - etcd arguments here (https://etcd.io/docs/latest/op-guide/configuration/)
+        # - "quota-backend-bytes=5368709120" # increase keyspace to 5GB (default 2GB, max 8GB)
       # kube_apiserver_arg:
         # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
       # kube_proxy_arg:
@@ -169,20 +166,45 @@ nodepools:
     # rollingUpdate:
       # maxUnavailable: 1
       # maxSurge: 1
+    # username: '' # only needed if not using cloudCredentialSecretName
+    # password: '' # only needed if not using cloudCredentialSecretName
+    # vcenter: '' # only needed if not using cloudCredentialSecretName
+    # vcenterPort: 443 # only needed if not using cloudCredentialSecretName
     datacenter: # required (example: /Datacenter)
     datastore: # required (example: /Datacenter/datastore/vsanDatastore)
-    creationType: # required (example: vm, template, library, legacy)
-    cloneFrom: # requried - cloneFrom will need to match the corresponding creationType
-    contentLibrary: # required
+    # datastoreCluster: ''
+    creationType: # required (vm, template, library, or legacy)
+    cloneFrom: # item to clone, must match creationType
+    # contentLibrary: '' # only needed with creationType library
     cpuCount: 4
-    memorySize: 8192
-    diskSize: 20000
-    # network:
-    # pool:
-    # vappIpallocationpolicy: 'fixedAllocated'
-    # vappIpprotocol: 'IPv4'
-    # vappProperty: '["ipaddress=ip#SETIPAADDRESSVAPPPROPERTY:","gateway=${gateway:#SETGATEWAYVAPPPROPERTY}","dns=${dns:#SETDNSVAPPPROPERTY}",]'
-    # vappTransport: 'com.vmware.guestInfo'
+    memorySize: 8192 # MB
+    diskSize: 20000 # MB
+    # network: # list
+    # - /Datacenter/network/VM Network
+    # folder: '' # must already exist
+    # hostsystem: '' # can be omitted when using a cluster with DRS
+    # pool: ''
+    # tag: # list of tag IDs
+    # - urn:xxx
+    # customAttribute: # list of key=value
+    # - '200=my custom value'
+    # cfgparam: # list, used for guestinfo
+    # - disk.enableUUID=TRUE
+    # cloudinit: '' # cloud-init file path or URL to add to guestinfo
+    # vappIpallocationpolicy: '' # dhcp, fixed, transient, or fixedAllocated
+    # vappIpprotocol: '' # IPv4 or IPv6
+    # vappProperty: # list
+    # - ipaddress=ip#SETIPADDRESSVAPPPROPERTY:
+    # - gateway=${gateway:#SETGATEWAYVAPPPROPERTY}
+    # - dns=${dns:#SETDNSVAPPPROPERTY}
+    # vappTransport: '' # iso or com.vmware.guestInfo
+    # os: linux
+    # sshPort: 22
+    # sshUser: docker
+    # sshUserGroup: staff
+    # sshPassword: tcuser
+    # boot2dockerUrl: ''
+    # gracefulShutdownTimeout: 0 # seconds
     # cloudConfig: |
       #cloud-config
 
@@ -208,20 +230,45 @@ nodepools:
     # rollingUpdate:
       # maxUnavailable: 1
       # maxSurge: 1
+    # username: '' # only needed if not using cloudCredentialSecretName
+    # password: '' # only needed if not using cloudCredentialSecretName
+    # vcenter: '' # only needed if not using cloudCredentialSecretName
+    # vcenterPort: 443 # only needed if not using cloudCredentialSecretName
     datacenter: # required (example: /Datacenter)
     datastore: # required (example: /Datacenter/datastore/vsanDatastore)
-    creationType: # required (example: vm, template, library, legacy)
-    cloneFrom: # requried - cloneFrom will need to match the corresponding creationType
-    contentLibrary: # required
+    # datastoreCluster: ''
+    creationType: # required (vm, template, library, or legacy)
+    cloneFrom: # item to clone, must match creationType
+    # contentLibrary: '' # only needed with creationType library
     cpuCount: 4
-    memorySize: 8192
-    diskSize: 20000
-    # network:
-    # pool:
-    # vappIpallocationpolicy: 'fixedAllocated'
-    # vappIpprotocol: 'IPv4'
-    # vappProperty: '["ipaddress=ip#SETIPAADDRESSVAPPPROPERTY:","gateway=${gateway:#SETGATEWAYVAPPPROPERTY}","dns=${dns:#SETDNSVAPPPROPERTY}",]'
-    # vappTransport: 'com.vmware.guestInfo'
+    memorySize: 8192 # MB
+    diskSize: 20000 # MB
+    # network: # list
+    # - /Datacenter/network/VM Network
+    # folder: '' # must already exist
+    # hostsystem: '' # can be omitted when using a cluster with DRS
+    # pool: ''
+    # tag: # list of tag IDs
+    # - urn:xxx
+    # customAttribute: # list of key=value
+    # - '200=my custom value'
+    # cfgparam: # list, used for guestinfo
+    # - disk.enableUUID=TRUE
+    # cloudinit: '' # cloud-init file path or URL to add to guestinfo
+    # vappIpallocationpolicy: '' # dhcp, fixed, transient, or fixedAllocated
+    # vappIpprotocol: '' # IPv4 or IPv6
+    # vappProperty: # list
+    # - ipaddress=ip#SETIPADDRESSVAPPPROPERTY:
+    # - gateway=${gateway:#SETGATEWAYVAPPPROPERTY}
+    # - dns=${dns:#SETDNSVAPPPROPERTY}
+    # vappTransport: '' # iso or com.vmware.guestInfo
+    # os: linux
+    # sshPort: 22
+    # sshUser: docker
+    # sshUserGroup: staff
+    # sshPassword: tcuser
+    # boot2dockerUrl: ''
+    # gracefulShutdownTimeout: 0 # seconds
     # cloudConfig: |
       #cloud-config
 

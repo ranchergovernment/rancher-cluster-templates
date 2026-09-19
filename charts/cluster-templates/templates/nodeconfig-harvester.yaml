@@ -6,9 +6,6 @@ kind: HarvesterConfig
 metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
-{{- if $nodepool.cloudConfig }}
-cloudConfig: {{$nodepool.cloudconfig }}
-{{- end }}
 {{- if $nodepool.clusterId }}
 clusterId: {{ $nodepool.clusterId }}
 {{- end }}
@@ -16,34 +13,52 @@ clusterId: {{ $nodepool.clusterId }}
 clusterType: {{ $nodepool.clusterType }}
 {{- end }}
 {{- if $nodepool.cpuCount }}
-cpuCount: {{ $nodepool.cpuCount | squote }}
+cpuCount: {{ include "rancher-cluster-templates.string" $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.cpuModel }}
+cpuModel: {{ $nodepool.cpuModel }}
+{{- end }}
+{{- if $nodepool.cpuPinning }}
+cpuPinning: {{ $nodepool.cpuPinning }}
 {{- end }}
 {{- if $nodepool.diskBus }}
 diskBus: {{ $nodepool.diskBus }}
 {{- end }}
 {{- if $nodepool.diskInfo }}
-diskInfo: {{ $nodepool.diskInfo }}
+diskInfo: {{- $nodepool.diskInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | squote }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.enableEfi }}
+enableEfi: {{ $nodepool.enableEfi }}
+{{- end }}
+{{- if $nodepool.enableSecureBoot }}
+enableSecureBoot: {{ $nodepool.enableSecureBoot }}
+{{- end }}
+{{- if $nodepool.enableTpm }}
+enableTpm: {{ $nodepool.enableTpm }}
 {{- end }}
 {{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
+{{- end }}
+{{- if $nodepool.isolateEmulatorThread }}
+isolateEmulatorThread: {{ $nodepool.isolateEmulatorThread }}
 {{- end }}
 {{- if $nodepool.keyPairName }}
 keyPairName: {{ $nodepool.keyPairName }}
 {{- end }}
 {{- if $nodepool.kubeconfigContent }}
-kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
+kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.memorySize }}
-memorySize: {{ $nodepool.memorySize | squote }}
+memorySize: {{ include "rancher-cluster-templates.string" $nodepool.memorySize | squote }}
 {{- end }}
 {{- if $nodepool.networkData }}
 networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.networkInfo }}
-networkInfo: {{ $nodepool.networkInfo }}
+networkInfo: {{- $nodepool.networkInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.networkModel }}
 networkModel: {{ $nodepool.networkModel }}
@@ -54,11 +69,14 @@ networkName: {{ $nodepool.networkName }}
 {{- if $nodepool.networkType }}
 networkType: {{ $nodepool.networkType }}
 {{- end }}
+{{- if $nodepool.reservedMemorySize }}
+reservedMemorySize: {{ include "rancher-cluster-templates.string" $nodepool.reservedMemorySize | squote }}
+{{- end }}
 {{- if $nodepool.sshPassword }}
-sshPassword: {{ $nodepool.sshPassword }}
+sshPassword: {{ include "rancher-cluster-templates.string" $nodepool.sshPassword | toRawJson }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | squote }}
+sshPort: {{ include "rancher-cluster-templates.string" $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshPrivateKeyPath }}
 sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
@@ -67,10 +85,13 @@ sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
 sshUser: {{ $nodepool.sshUser }}
 {{- end }}
 {{- if $nodepool.userData }}
-userData: {{ $nodepool.userData | toYaml }}
+userData: {{- $nodepool.userData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.vgpuInfo }}
+vgpuInfo: {{- $nodepool.vgpuInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.vmAffinity }}
-vmAffinity: {{ $nodepool.vmAffinity}}
+vmAffinity: {{- $nodepool.vmAffinity | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.vmNamespace }}
 vmNamespace: {{ $nodepool.vmNamespace }}
@@ -84,18 +105,6 @@ kind: HarvesterConfig
 metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
-{{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
-{{- end }}
-{{- if $nodepool.cloudConfig }}
-cloudConfig: {{$nodepool.cloudconfig }}
-{{- end }}
 {{- if $nodepool.clusterId }}
 clusterId: {{ $nodepool.clusterId }}
 {{- end }}
@@ -103,34 +112,52 @@ clusterId: {{ $nodepool.clusterId }}
 clusterType: {{ $nodepool.clusterType }}
 {{- end }}
 {{- if $nodepool.cpuCount }}
-cpuCount: {{ $nodepool.cpuCount | squote }}
+cpuCount: {{ include "rancher-cluster-templates.string" $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.cpuModel }}
+cpuModel: {{ $nodepool.cpuModel }}
+{{- end }}
+{{- if $nodepool.cpuPinning }}
+cpuPinning: {{ $nodepool.cpuPinning }}
 {{- end }}
 {{- if $nodepool.diskBus }}
 diskBus: {{ $nodepool.diskBus }}
 {{- end }}
 {{- if $nodepool.diskInfo }}
-diskInfo: {{ $nodepool.diskInfo }}
+diskInfo: {{- $nodepool.diskInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | squote }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.enableEfi }}
+enableEfi: {{ $nodepool.enableEfi }}
+{{- end }}
+{{- if $nodepool.enableSecureBoot }}
+enableSecureBoot: {{ $nodepool.enableSecureBoot }}
+{{- end }}
+{{- if $nodepool.enableTpm }}
+enableTpm: {{ $nodepool.enableTpm }}
 {{- end }}
 {{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
+{{- end }}
+{{- if $nodepool.isolateEmulatorThread }}
+isolateEmulatorThread: {{ $nodepool.isolateEmulatorThread }}
 {{- end }}
 {{- if $nodepool.keyPairName }}
 keyPairName: {{ $nodepool.keyPairName }}
 {{- end }}
 {{- if $nodepool.kubeconfigContent }}
-kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
+kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.memorySize }}
-memorySize: {{ $nodepool.memorySize | squote }}
+memorySize: {{ include "rancher-cluster-templates.string" $nodepool.memorySize | squote }}
 {{- end }}
 {{- if $nodepool.networkData }}
 networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.networkInfo }}
-networkInfo: {{ $nodepool.networkInfo }}
+networkInfo: {{- $nodepool.networkInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.networkModel }}
 networkModel: {{ $nodepool.networkModel }}
@@ -141,11 +168,14 @@ networkName: {{ $nodepool.networkName }}
 {{- if $nodepool.networkType }}
 networkType: {{ $nodepool.networkType }}
 {{- end }}
+{{- if $nodepool.reservedMemorySize }}
+reservedMemorySize: {{ include "rancher-cluster-templates.string" $nodepool.reservedMemorySize | squote }}
+{{- end }}
 {{- if $nodepool.sshPassword }}
-sshPassword: {{ $nodepool.sshPassword }}
+sshPassword: {{ include "rancher-cluster-templates.string" $nodepool.sshPassword | toRawJson }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | squote }}
+sshPort: {{ include "rancher-cluster-templates.string" $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshPrivateKeyPath }}
 sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
@@ -154,10 +184,13 @@ sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
 sshUser: {{ $nodepool.sshUser }}
 {{- end }}
 {{- if $nodepool.userData }}
-userData: {{ $nodepool.userData | toYaml }}
+userData: {{- $nodepool.userData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.vgpuInfo }}
+vgpuInfo: {{- $nodepool.vgpuInfo | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.vmAffinity }}
-vmAffinity: {{ $nodepool.vmAffinity }}
+vmAffinity: {{- $nodepool.vmAffinity | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.vmNamespace }}
 vmNamespace: {{ $nodepool.vmNamespace }}
