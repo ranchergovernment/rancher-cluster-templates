@@ -40,7 +40,6 @@ cluster:
       #   value: value
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
-    # defaultPodSecurityPolicyTemplateName: ''
     # etcd:
     #   disableSnapshots: false
     #   snapshotRetention: 5
@@ -59,8 +58,8 @@ cluster:
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
-      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
-      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # cluster_cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service_cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
       docker: false
       # token: ''
       # tls_san:
@@ -80,12 +79,16 @@ cluster:
       write_kubeconfig_mode: 0600
       use_service_account_credentials: false
       protect_kernel_defaults: false
+      # audit_policy_file: '' # path to the audit policy file on the nodes
       cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
       # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
       # kube_controller_manager_arg:
         # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       # kube_scheduler_arg:
         # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # etcd_arg:
+        # - etcd arguments here (https://etcd.io/docs/latest/op-guide/configuration/)
+        # - "quota-backend-bytes=5368709120" # increase keyspace to 5GB (default 2GB, max 8GB)
       # kube_apiserver_arg:
         # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
       # kube_proxy_arg:
