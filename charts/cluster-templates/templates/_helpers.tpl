@@ -60,3 +60,22 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/* Renders a list of strings as YAML items */}}
+{{- define "rancher-cluster-templates.stringlist" -}}
+{{- $list := . -}}
+{{- if kindIs "string" $list -}}
+{{- if hasPrefix "[" (trim $list) }}{{- $list = fromYamlArray $list }}{{- else }}{{- $list = list $list }}{{- end -}}
+{{- else if not (kindIs "slice" $list) }}{{- $list = list $list }}{{- end -}}
+{{- range $i, $v := $list }}
+{{- if $i }}{{ "\n" }}{{- end }}
+{{- printf "- %s" (toYaml (include "rancher-cluster-templates.string" $v)) }}
+{{- end }}
+{{- end }}
+
+{{/* Renders a value as a plain string without scientific notation */}}
+{{- define "rancher-cluster-templates.string" -}}
+{{- if kindIs "float64" . -}}
+{{- if eq . (floor .) -}}{{ int64 . }}{{- else -}}{{ . }}{{- end -}}
+{{- else -}}{{ . }}{{- end -}}
+{{- end }}
