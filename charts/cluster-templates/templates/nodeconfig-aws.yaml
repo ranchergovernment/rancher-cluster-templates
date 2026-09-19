@@ -7,16 +7,19 @@ metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 {{- if $nodepool.accessKey }}
-accessKey: {{ $nodepool.accessKey }}
+accessKey: {{ include "rancher-cluster-templates.string" $nodepool.accessKey | toRawJson }}
 {{- end }}
 {{- if $nodepool.ami }}
 ami: {{ $nodepool.ami }}
 {{- end }}
 {{- if $nodepool.blockDurationMinutes }}
-blockDurationMinutes: {{ $nodepool.blockDurationMinutes }}
+blockDurationMinutes: {{ include "rancher-cluster-templates.string" $nodepool.blockDurationMinutes | squote }}
 {{- end }}
 {{- if $nodepool.deviceName }}
 deviceName: {{ $nodepool.deviceName }}
+{{- end }}
+{{- if $nodepool.enablePrimaryIpv6 }}
+enablePrimaryIpv6: {{ $nodepool.enablePrimaryIpv6 }}
 {{- end }}
 {{- if $nodepool.encryptEbsVolume }}
 encryptEbsVolume: {{ $nodepool.encryptEbsVolume }}
@@ -26,6 +29,9 @@ endpoint: {{ $nodepool.endpoint }}
 {{- end }}
 {{- if $nodepool.httpEndpoint }}
 httpEndpoint: {{ $nodepool.httpEndpoint }}
+{{- end }}
+{{- if $nodepool.httpProtocolIpv6 }}
+httpProtocolIpv6: {{ $nodepool.httpProtocolIpv6 }}
 {{- end }}
 {{- if $nodepool.httpTokens }}
 httpTokens: {{ $nodepool.httpTokens }}
@@ -39,6 +45,12 @@ insecureTransport: {{ $nodepool.insecureTransport }}
 {{- if $nodepool.instanceType }}
 instanceType: {{ $nodepool.instanceType }}
 {{- end }}
+{{- if $nodepool.ipv6AddressCount }}
+ipv6AddressCount: {{ include "rancher-cluster-templates.string" $nodepool.ipv6AddressCount | squote }}
+{{- end }}
+{{- if $nodepool.ipv6AddressOnly }}
+ipv6AddressOnly: {{ $nodepool.ipv6AddressOnly }}
+{{- end }}
 {{- if $nodepool.keypairName }}
 keypairName: {{ $nodepool.keypairName }}
 {{- end }}
@@ -51,7 +63,7 @@ monitoring: {{ $nodepool.monitoring }}
 {{- if $nodepool.openPort}}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | squote }}
+- {{ include "rancher-cluster-templates.string" $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.privateAddressOnly }}
@@ -64,31 +76,32 @@ region: {{ $nodepool.region }}
 requestSpotInstance: {{ $nodepool.requestSpotInstance }}
 {{- end }}
 {{- if $nodepool.retries }}
-retries: {{ $nodepool.retries | squote }}
+retries: {{ include "rancher-cluster-templates.string" $nodepool.retries | squote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
-rootSize: {{ $nodepool.rootSize | squote }}
+rootSize: {{ include "rancher-cluster-templates.string" $nodepool.rootSize | squote }}
 {{- end }}
 {{- if $nodepool.secretKey }}
-secretKey: {{ $nodepool.secretKey }}
+secretKey: {{ include "rancher-cluster-templates.string" $nodepool.secretKey | toRawJson }}
 {{- end }}
-securityGroup:
 {{- if $nodepool.createSecurityGroup }}
+securityGroup:
 - rancher-nodes
-{{- else }}
+{{- else if $nodepool.securityGroups }}
+securityGroup:
 {{ toYaml $nodepool.securityGroups }}
 {{- end }}
 {{- if $nodepool.securityGroupReadonly }}
 securityGroupReadonly: {{ $nodepool.securityGroupReadonly }}
 {{- end }}
 {{- if $nodepool.sessionToken }}
-sessionToken: {{ $nodepool.sessionToken }}
+sessionToken: {{ include "rancher-cluster-templates.string" $nodepool.sessionToken | toRawJson }}
 {{- end }}
 {{- if $nodepool.spotPrice }}
-spotPrice: {{ $nodepool.spotPrice }}
+spotPrice: {{ include "rancher-cluster-templates.string" $nodepool.spotPrice | squote }}
 {{- end }}
 {{- if $nodepool.sshKeyContents }}
-sshKeyContents: {{ $nodepool.sshKeyContents }}
+sshKeyContents: {{- $nodepool.sshKeyContents | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
@@ -126,26 +139,20 @@ kind: Amazonec2Config
 metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
-{{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
-{{- end }}
 {{- if $nodepool.accessKey }}
-accessKey: {{ $nodepool.accessKey }}
+accessKey: {{ include "rancher-cluster-templates.string" $nodepool.accessKey | toRawJson }}
 {{- end }}
 {{- if $nodepool.ami }}
 ami: {{ $nodepool.ami }}
 {{- end }}
 {{- if $nodepool.blockDurationMinutes }}
-blockDurationMinutes: {{ $nodepool.blockDurationMinutes }}
+blockDurationMinutes: {{ include "rancher-cluster-templates.string" $nodepool.blockDurationMinutes | squote }}
 {{- end }}
 {{- if $nodepool.deviceName }}
 deviceName: {{ $nodepool.deviceName }}
+{{- end }}
+{{- if $nodepool.enablePrimaryIpv6 }}
+enablePrimaryIpv6: {{ $nodepool.enablePrimaryIpv6 }}
 {{- end }}
 {{- if $nodepool.encryptEbsVolume }}
 encryptEbsVolume: {{ $nodepool.encryptEbsVolume }}
@@ -155,6 +162,9 @@ endpoint: {{ $nodepool.endpoint }}
 {{- end }}
 {{- if $nodepool.httpEndpoint }}
 httpEndpoint: {{ $nodepool.httpEndpoint }}
+{{- end }}
+{{- if $nodepool.httpProtocolIpv6 }}
+httpProtocolIpv6: {{ $nodepool.httpProtocolIpv6 }}
 {{- end }}
 {{- if $nodepool.httpTokens }}
 httpTokens: {{ $nodepool.httpTokens }}
@@ -168,6 +178,12 @@ insecureTransport: {{ $nodepool.insecureTransport }}
 {{- if $nodepool.instanceType }}
 instanceType: {{ $nodepool.instanceType }}
 {{- end }}
+{{- if $nodepool.ipv6AddressCount }}
+ipv6AddressCount: {{ include "rancher-cluster-templates.string" $nodepool.ipv6AddressCount | squote }}
+{{- end }}
+{{- if $nodepool.ipv6AddressOnly }}
+ipv6AddressOnly: {{ $nodepool.ipv6AddressOnly }}
+{{- end }}
 {{- if $nodepool.keypairName }}
 keypairName: {{ $nodepool.keypairName }}
 {{- end }}
@@ -180,7 +196,7 @@ monitoring: {{ $nodepool.monitoring }}
 {{- if $nodepool.openPort}}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | squote }}
+- {{ include "rancher-cluster-templates.string" $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.privateAddressOnly }}
@@ -193,13 +209,13 @@ region: {{ $nodepool.region }}
 requestSpotInstance: {{ $nodepool.requestSpotInstance }}
 {{- end }}
 {{- if $nodepool.retries }}
-retries: {{ $nodepool.retries | squote }}
+retries: {{ include "rancher-cluster-templates.string" $nodepool.retries | squote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
-rootSize: {{ $nodepool.rootSize | squote }}
+rootSize: {{ include "rancher-cluster-templates.string" $nodepool.rootSize | squote }}
 {{- end }}
 {{- if $nodepool.secretKey }}
-secretKey: {{ $nodepool.secretKey }}
+secretKey: {{ include "rancher-cluster-templates.string" $nodepool.secretKey | toRawJson }}
 {{- end }}
 {{- if $nodepool.createSecurityGroup }}
 securityGroup:
@@ -212,13 +228,13 @@ securityGroup:
 securityGroupReadonly: {{ $nodepool.securityGroupReadonly }}
 {{- end }}
 {{- if $nodepool.sessionToken }}
-sessionToken: {{ $nodepool.sessionToken }}
+sessionToken: {{ include "rancher-cluster-templates.string" $nodepool.sessionToken | toRawJson }}
 {{- end }}
 {{- if $nodepool.spotPrice }}
-spotPrice: {{ $nodepool.spotPrice }}
+spotPrice: {{ include "rancher-cluster-templates.string" $nodepool.spotPrice | squote }}
 {{- end }}
 {{- if $nodepool.sshKeyContents }}
-sshKeyContents: {{ $nodepool.sshKeyContents }}
+sshKeyContents: {{- $nodepool.sshKeyContents | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}

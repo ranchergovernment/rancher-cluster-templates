@@ -58,16 +58,16 @@ If you do not have Cloud Credentials already created within the Rancher Manager,
 
 ```bash
 # with long-term credentials (accessKey and secretKey)
-kubectl create secret -n cattle-global-data generic aws-creds-sts --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY
+kubectl create secret -n cattle-global-data generic --type provisioning.cattle.io/cloud-credential aws-creds --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY
 
 kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/driver=aws
 ```
 
 ```bash
 # with temporary credentials (accessKey, secretKey, sessionToken)
-kubectl create secret -n cattle-global-data generic aws-creds --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY --from-literal=amazonec2credentialConfig-sessonToken=$SESSIONTOKEN
+kubectl create secret -n cattle-global-data generic --type provisioning.cattle.io/cloud-credential aws-creds-sts --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY --from-literal=amazonec2credentialConfig-sessionToken=$SESSIONTOKEN
 
-kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/driver=aws
+kubectl annotate secret -n cattle-global-data aws-creds-sts provisioning.cattle.io/driver=aws
 ```
 
 #### For Harvester Credentials
