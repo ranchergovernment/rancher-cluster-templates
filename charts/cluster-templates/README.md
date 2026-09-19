@@ -75,7 +75,7 @@ kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/d
 ```bash
 export CLUSTERID=$(kubectl get clusters.management.cattle.io -o=jsonpath='{range .items[?(@.metadata.labels.provider\.cattle\.io=="harvester")]}{.metadata.name}{"\n"}{end}')
 
-kubectl create secret -n cattle-global-data generic harvester-creds --from-literal=harvestercredentialConfig-clusterId=$CLUSTERID --from-literal=harvestercredentialConfig-clusterType=imported --from-file=harvestercredentialConfig-kubeconfigContent=harvester.yaml
+kubectl create secret -n cattle-global-data generic --type provisioning.cattle.io/cloud-credential harvester-creds --from-literal=harvestercredentialConfig-clusterId=$CLUSTERID --from-literal=harvestercredentialConfig-clusterType=imported --from-file=harvestercredentialConfig-kubeconfigContent=harvester.yaml
 
 kubectl annotate secret -n cattle-global-data harvester-creds provisioning.cattle.io/driver=harvester
 ```
