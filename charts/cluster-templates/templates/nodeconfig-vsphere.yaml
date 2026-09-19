@@ -6,45 +6,110 @@ kind: VmwarevsphereConfig
 metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
-{{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
+{{- if $nodepool.boot2dockerUrl }}
+boot2dockerUrl: {{ $nodepool.boot2dockerUrl }}
 {{- end }}
 {{- if $nodepool.cfgparam }}
-cfgparam: {{ $nodepool.cfgparam }}
+cfgparam:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.cfgparam }}
 {{- end }}
+{{- if $nodepool.cloneFrom }}
 cloneFrom: {{ $nodepool.cloneFrom }}
-cloudConfig: |-
-{{ $nodepool.cloudConfig | indent 2 }}
+{{- end }}
+{{- if $nodepool.cloudConfig }}
+cloudConfig: {{- $nodepool.cloudConfig | trimSuffix "\n" | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.cloudinit }}
 cloudinit: {{ $nodepool.cloudinit }}
+{{- end }}
+{{- if $nodepool.contentLibrary }}
 contentLibrary: {{ $nodepool.contentLibrary }}
-cpuCount: {{ $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.cpuCount }}
+cpuCount: {{ include "rancher-cluster-templates.string" $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.creationType }}
 creationType: {{ $nodepool.creationType }}
-customAttribute: {{ $nodepool.customAttribute }}
+{{- end }}
+{{- if $nodepool.customAttribute }}
+customAttribute:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.customAttribute }}
+{{- end }}
+{{- if $nodepool.datacenter }}
 datacenter: {{ $nodepool.datacenter }}
+{{- end }}
+{{- if $nodepool.datastore }}
 datastore: {{ $nodepool.datastore }}
+{{- end }}
+{{- if $nodepool.datastoreCluster }}
 datastoreCluster: {{ $nodepool.datastoreCluster }}
-diskSize: {{ $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.diskSize }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.folder }}
 folder: {{ $nodepool.folder }}
+{{- end }}
+{{- if $nodepool.gracefulShutdownTimeout }}
+gracefulShutdownTimeout: {{ include "rancher-cluster-templates.string" $nodepool.gracefulShutdownTimeout | squote }}
+{{- end }}
+{{- if $nodepool.hostsystem }}
 hostsystem: {{ $nodepool.hostsystem }}
-memorySize: {{ $nodepool.memorySize | squote }}
-network: {{ $nodepool.network }}
+{{- end }}
+{{- if $nodepool.memorySize }}
+memorySize: {{ include "rancher-cluster-templates.string" $nodepool.memorySize | squote }}
+{{- end }}
+{{- if $nodepool.network }}
+network:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.network }}
+{{- end }}
+{{- if $nodepool.os }}
+os: {{ $nodepool.os }}
+{{- end }}
+{{- if $nodepool.password }}
+password: {{ include "rancher-cluster-templates.string" $nodepool.password | toRawJson }}
+{{- end }}
+{{- if $nodepool.pool }}
 pool: {{ $nodepool.pool }}
-sshPort: {{ $nodepool.sshPort | squote }}
+{{- end }}
+{{- if $nodepool.sshPassword }}
+sshPassword: {{ include "rancher-cluster-templates.string" $nodepool.sshPassword | toRawJson }}
+{{- end }}
+{{- if $nodepool.sshPort }}
+sshPort: {{ include "rancher-cluster-templates.string" $nodepool.sshPort | squote }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
+{{- end }}
+{{- if $nodepool.sshUserGroup }}
 sshUserGroup: {{ $nodepool.sshUserGroup }}
-tag: {{ $nodepool.tag }}
+{{- end }}
+{{- if $nodepool.tag }}
+tag:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.tag }}
+{{- end }}
+{{- if $nodepool.username }}
+username: {{ include "rancher-cluster-templates.string" $nodepool.username | toRawJson }}
+{{- end }}
+{{- if $nodepool.vappIpallocationpolicy }}
 vappIpallocationpolicy: {{ $nodepool.vappIpallocationpolicy }}
+{{- end }}
+{{- if $nodepool.vappIpprotocol }}
 vappIpprotocol: {{ $nodepool.vappIpprotocol }}
-vappProperty: {{ $nodepool.vappProperty }}
+{{- end }}
+{{- if $nodepool.vappProperty }}
+vappProperty:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.vappProperty }}
+{{- end }}
+{{- if $nodepool.vappTransport }}
 vappTransport: {{ $nodepool.vappTransport }}
+{{- end }}
+{{- if $nodepool.vcenter }}
 vcenter: {{ $nodepool.vcenter }}
-vcenterPort: {{ $nodepool.vcenterPort | squote }}
+{{- end }}
+{{- if $nodepool.vcenterPort }}
+vcenterPort: {{ include "rancher-cluster-templates.string" $nodepool.vcenterPort | squote }}
+{{- end }}
 ---
 {{- end }}
 {{ $nodepool := .Values.nodepool }}
@@ -54,44 +119,109 @@ kind: VmwarevsphereConfig
 metadata:
   name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
-{{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
+{{- if $nodepool.boot2dockerUrl }}
+boot2dockerUrl: {{ $nodepool.boot2dockerUrl }}
 {{- end }}
 {{- if $nodepool.cfgparam }}
-cfgparam: {{ $nodepool.cfgparam }}
+cfgparam:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.cfgparam }}
 {{- end }}
+{{- if $nodepool.cloneFrom }}
 cloneFrom: {{ $nodepool.cloneFrom }}
-cloudConfig: |-
-{{ $nodepool.cloudConfig | indent 2 }}
+{{- end }}
+{{- if $nodepool.cloudConfig }}
+cloudConfig: {{- $nodepool.cloudConfig | trimSuffix "\n" | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.cloudinit }}
 cloudinit: {{ $nodepool.cloudinit }}
+{{- end }}
+{{- if $nodepool.contentLibrary }}
 contentLibrary: {{ $nodepool.contentLibrary }}
-cpuCount: {{ $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.cpuCount }}
+cpuCount: {{ include "rancher-cluster-templates.string" $nodepool.cpuCount | squote }}
+{{- end }}
+{{- if $nodepool.creationType }}
 creationType: {{ $nodepool.creationType }}
-customAttribute: {{ $nodepool.customAttribute }}
+{{- end }}
+{{- if $nodepool.customAttribute }}
+customAttribute:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.customAttribute }}
+{{- end }}
+{{- if $nodepool.datacenter }}
 datacenter: {{ $nodepool.datacenter }}
+{{- end }}
+{{- if $nodepool.datastore }}
 datastore: {{ $nodepool.datastore }}
+{{- end }}
+{{- if $nodepool.datastoreCluster }}
 datastoreCluster: {{ $nodepool.datastoreCluster }}
-diskSize: {{ $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.diskSize }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
+{{- end }}
+{{- if $nodepool.folder }}
 folder: {{ $nodepool.folder }}
+{{- end }}
+{{- if $nodepool.gracefulShutdownTimeout }}
+gracefulShutdownTimeout: {{ include "rancher-cluster-templates.string" $nodepool.gracefulShutdownTimeout | squote }}
+{{- end }}
+{{- if $nodepool.hostsystem }}
 hostsystem: {{ $nodepool.hostsystem }}
-memorySize: {{ $nodepool.memorySize | squote }}
-network: {{ $nodepool.network }}
+{{- end }}
+{{- if $nodepool.memorySize }}
+memorySize: {{ include "rancher-cluster-templates.string" $nodepool.memorySize | squote }}
+{{- end }}
+{{- if $nodepool.network }}
+network:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.network }}
+{{- end }}
+{{- if $nodepool.os }}
+os: {{ $nodepool.os }}
+{{- end }}
+{{- if $nodepool.password }}
+password: {{ include "rancher-cluster-templates.string" $nodepool.password | toRawJson }}
+{{- end }}
+{{- if $nodepool.pool }}
 pool: {{ $nodepool.pool }}
-sshPort: {{ $nodepool.sshPort | squote }}
+{{- end }}
+{{- if $nodepool.sshPassword }}
+sshPassword: {{ include "rancher-cluster-templates.string" $nodepool.sshPassword | toRawJson }}
+{{- end }}
+{{- if $nodepool.sshPort }}
+sshPort: {{ include "rancher-cluster-templates.string" $nodepool.sshPort | squote }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
+{{- end }}
+{{- if $nodepool.sshUserGroup }}
 sshUserGroup: {{ $nodepool.sshUserGroup }}
-tag: {{ $nodepool.tag }}
+{{- end }}
+{{- if $nodepool.tag }}
+tag:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.tag }}
+{{- end }}
+{{- if $nodepool.username }}
+username: {{ include "rancher-cluster-templates.string" $nodepool.username | toRawJson }}
+{{- end }}
+{{- if $nodepool.vappIpallocationpolicy }}
 vappIpallocationpolicy: {{ $nodepool.vappIpallocationpolicy }}
+{{- end }}
+{{- if $nodepool.vappIpprotocol }}
 vappIpprotocol: {{ $nodepool.vappIpprotocol }}
-vappProperty: {{ $nodepool.vappProperty }}
+{{- end }}
+{{- if $nodepool.vappProperty }}
+vappProperty:
+{{ include "rancher-cluster-templates.stringlist" $nodepool.vappProperty }}
+{{- end }}
+{{- if $nodepool.vappTransport }}
 vappTransport: {{ $nodepool.vappTransport }}
+{{- end }}
+{{- if $nodepool.vcenter }}
 vcenter: {{ $nodepool.vcenter }}
-vcenterPort: {{ $nodepool.vcenterPort | squote }}
+{{- end }}
+{{- if $nodepool.vcenterPort }}
+vcenterPort: {{ include "rancher-cluster-templates.string" $nodepool.vcenterPort | squote }}
+{{- end }}
 {{- end }}
 {{- end }}
