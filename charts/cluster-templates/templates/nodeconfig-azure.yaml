@@ -13,25 +13,25 @@ acceleratedNetworking: {{ $nodepool.acceleratedNetworking }}
 availabilitySet: {{ $nodepool.availabilitySet }}
 {{- end }}
 {{- if $nodepool.availabilityZone }}
-availabilityZone: {{ $nodepool.availabilityZone | squote }}
+availabilityZone: {{ include "rancher-cluster-templates.string" $nodepool.availabilityZone | squote }}
 {{- end }}
 {{- if $nodepool.clientId }}
-clientId: {{ $nodepool.clientId }}
+clientId: {{ include "rancher-cluster-templates.string" $nodepool.clientId | toRawJson }}
 {{- end }}
 {{- if $nodepool.clientSecret }}
-clientSecret: {{ $nodepool.clientSecret }}
+clientSecret: {{ include "rancher-cluster-templates.string" $nodepool.clientSecret | toRawJson }}
 {{- end }}
 {{- if $nodepool.customData }}
 customData: {{- $nodepool.customData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | squote }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
 {{- end }}
 {{- if $nodepool.dns }}
 dns: {{ $nodepool.dns }}
 {{- end }}
 {{- if $nodepool.dockerPort }}
-dockerPort: {{ $nodepool.dockerPort | squote }}
+dockerPort: {{ include "rancher-cluster-templates.string" $nodepool.dockerPort | squote }}
 {{- end }}
 {{- if $nodepool.enablePublicIpStandardSku }}
 enablePublicIpStandardSku: {{ $nodepool.enablePublicIpStandardSku }}
@@ -40,7 +40,7 @@ enablePublicIpStandardSku: {{ $nodepool.enablePublicIpStandardSku }}
 environment: {{ $nodepool.environment }}
 {{- end }}
 {{- if $nodepool.faultDomainCount }}
-faultDomainCount: {{ $nodepool.faultDomainCount | squote }}
+faultDomainCount: {{ include "rancher-cluster-templates.string" $nodepool.faultDomainCount | squote }}
 {{- end }}
 {{- if $nodepool.image }}
 image: {{ $nodepool.image }}
@@ -60,7 +60,7 @@ nsg: {{ $nodepool.nsg }}
 {{- if $nodepool.openPort }}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | squote }}
+- {{ include "rancher-cluster-templates.string" $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.plan }}
@@ -91,16 +91,16 @@ subnet: {{ $nodepool.subnet }}
 subnetPrefix: {{ $nodepool.subnetPrefix }}
 {{- end }}
 {{- if $nodepool.subscriptionId }}
-subscriptionId: {{ $nodepool.subscriptionId }}
+subscriptionId: {{ include "rancher-cluster-templates.string" $nodepool.subscriptionId | toRawJson }}
 {{- end }}
 {{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
 {{- end }}
 {{- if $nodepool.tenantId }}
-tenantId: {{ $nodepool.tenantId }}
+tenantId: {{ include "rancher-cluster-templates.string" $nodepool.tenantId | toRawJson }}
 {{- end }}
 {{- if $nodepool.updateDomainCount }}
-updateDomainCount: {{ $nodepool.updateDomainCount | squote }}
+updateDomainCount: {{ include "rancher-cluster-templates.string" $nodepool.updateDomainCount | squote }}
 {{- end }}
 {{- if $nodepool.usePrivateIp }}
 usePrivateIp: {{ $nodepool.usePrivateIp }}
@@ -124,25 +124,25 @@ acceleratedNetworking: {{ $nodepool.acceleratedNetworking }}
 availabilitySet: {{ $nodepool.availabilitySet }}
 {{- end }}
 {{- if $nodepool.availabilityZone }}
-availabilityZone: {{ $nodepool.availabilityZone | squote }}
+availabilityZone: {{ include "rancher-cluster-templates.string" $nodepool.availabilityZone | squote }}
 {{- end }}
 {{- if $nodepool.clientId }}
-clientId: {{ $nodepool.clientId }}
+clientId: {{ include "rancher-cluster-templates.string" $nodepool.clientId | toRawJson }}
 {{- end }}
 {{- if $nodepool.clientSecret }}
-clientSecret: {{ $nodepool.clientSecret }}
+clientSecret: {{ include "rancher-cluster-templates.string" $nodepool.clientSecret | toRawJson }}
 {{- end }}
 {{- if $nodepool.customData }}
 customData: {{- $nodepool.customData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | squote }}
+diskSize: {{ include "rancher-cluster-templates.string" $nodepool.diskSize | squote }}
 {{- end }}
 {{- if $nodepool.dns }}
 dns: {{ $nodepool.dns }}
 {{- end }}
 {{- if $nodepool.dockerPort }}
-dockerPort: {{ $nodepool.dockerPort | squote }}
+dockerPort: {{ include "rancher-cluster-templates.string" $nodepool.dockerPort | squote }}
 {{- end }}
 {{- if $nodepool.enablePublicIpStandardSku }}
 enablePublicIpStandardSku: {{ $nodepool.enablePublicIpStandardSku }}
@@ -151,7 +151,7 @@ enablePublicIpStandardSku: {{ $nodepool.enablePublicIpStandardSku }}
 environment: {{ $nodepool.environment }}
 {{- end }}
 {{- if $nodepool.faultDomainCount }}
-faultDomainCount: {{ $nodepool.faultDomainCount | squote }}
+faultDomainCount: {{ include "rancher-cluster-templates.string" $nodepool.faultDomainCount | squote }}
 {{- end }}
 {{- if $nodepool.image }}
 image: {{ $nodepool.image }}
@@ -171,7 +171,7 @@ nsg: {{ $nodepool.nsg }}
 {{- if $nodepool.openPort }}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | squote }}
+- {{ include "rancher-cluster-templates.string" $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.plan }}
@@ -202,16 +202,16 @@ subnet: {{ $nodepool.subnet }}
 subnetPrefix: {{ $nodepool.subnetPrefix }}
 {{- end }}
 {{- if $nodepool.subscriptionId }}
-subscriptionId: {{ $nodepool.subscriptionId }}
+subscriptionId: {{ include "rancher-cluster-templates.string" $nodepool.subscriptionId | toRawJson }}
 {{- end }}
 {{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
 {{- end }}
 {{- if $nodepool.tenantId }}
-tenantId: {{ $nodepool.tenantId }}
+tenantId: {{ include "rancher-cluster-templates.string" $nodepool.tenantId | toRawJson }}
 {{- end }}
 {{- if $nodepool.updateDomainCount }}
-updateDomainCount: {{ $nodepool.updateDomainCount | squote }}
+updateDomainCount: {{ include "rancher-cluster-templates.string" $nodepool.updateDomainCount | squote }}
 {{- end }}
 {{- if $nodepool.usePrivateIp }}
 usePrivateIp: {{ $nodepool.usePrivateIp }}

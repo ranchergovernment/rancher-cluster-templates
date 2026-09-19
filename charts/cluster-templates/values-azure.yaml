@@ -40,7 +40,6 @@ cluster:
       #   value: value
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
-    # defaultPodSecurityPolicyTemplateName: ''
     # etcd:
     #   disableSnapshots: false
     #   snapshotRetention: 5
@@ -59,8 +58,8 @@ cluster:
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
-      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
-      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # cluster_cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service_cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
       docker: false
       # token: ''
       # tls_san:
@@ -80,12 +79,16 @@ cluster:
       write_kubeconfig_mode: 0600
       use_service_account_credentials: false
       protect_kernel_defaults: false
+      # audit_policy_file: '' # path to the audit policy file on the nodes
       cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
       # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
       # kube_controller_manager_arg:
         # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       # kube_scheduler_arg:
         # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # etcd_arg:
+        # - etcd arguments here (https://etcd.io/docs/latest/op-guide/configuration/)
+        # - "quota-backend-bytes=5368709120" # increase keyspace to 5GB (default 2GB, max 8GB)
       # kube_apiserver_arg:
         # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
       # kube_proxy_arg:
@@ -165,35 +168,35 @@ nodepools:
     # environment: '' # only needed if not using cloudCredentialSecretName (AzurePublicCloud or AzureUSGovernmentCloud)
     # subscriptionId: '' # only needed if not using cloudCredentialSecretName
     # tenantId: '' # only needed if not using cloudCredentialSecretName
-    location: # required (example: eastus)
-    resourceGroup: # required (example: rke2-cluster-rg) - created if missing
-    image: # required (example: canonical:ubuntu-24_04-lts:server-gen1:latest) - publisher:offer:sku:version or the ARM resource ID of a custom image
-    size: # required (example: Standard_D4s_v5)
-    sshUser: # required (example: azureuser)
+    location: # required (Azure region)
+    resourceGroup: # required (created if missing)
+    image: # required (image URN or custom image resource ID)
+    size: # required (VM size)
+    sshUser: # required
     diskSize: 150 # GiB
     managedDisks: true
     storageType: Standard_LRS
-    vnet: '' # (example: rke2-cluster-vnet) - [resourcegroup:]name, created if missing
-    subnet: '' # (example: rke2-cluster-subnet) - created if missing
-    subnetPrefix: '' # (example: 192.168.0.0/16) - RFC 1918 CIDR, only used when creating the subnet
-    # nsg: '' # name or resource ID of an existing NSG - default creates a new NSG per machine
-    # openPort: # port or port/protocol (tcp, udp, *)
+    vnet: '' # created if missing
+    subnet: '' # created if missing
+    subnetPrefix: '' # CIDR for a new subnet
+    # nsg: '' # existing NSG name or resource ID
+    # openPort: # port or port/protocol
     # - "80"
     # - "443/tcp"
     # availabilitySet: ''
-    # availabilityZone: '' # single zone (example: 1) - requires managedDisks and enablePublicIpStandardSku
+    # availabilityZone: '' # needs managedDisks and enablePublicIpStandardSku
     # faultDomainCount: 3
     # updateDomainCount: 5
     # dns: '' # unique DNS label for the public IP address
-    # dockerPort: 2376 # port of the Docker rule added to the created NSG, RKE2 does not use Docker
+    # dockerPort: 2376 # Docker port opened on the created NSG
     # privateIpAddress: ''
     usePrivateIp: false
     noPublicIp: false
     staticPublicIp: false
     # acceleratedNetworking: false
     # enablePublicIpStandardSku: false
-    # plan: '' # publisher:product:plan
-    # tags: '' # comma-separated key,value pairs (example: key1,value1,key2,value2)
+    # plan: '' # purchase plan for the image
+    # tags: '' # comma separated key and value pairs
     # customData: |
       #cloud-config
 
@@ -225,35 +228,35 @@ nodepools:
     # environment: '' # only needed if not using cloudCredentialSecretName (AzurePublicCloud or AzureUSGovernmentCloud)
     # subscriptionId: '' # only needed if not using cloudCredentialSecretName
     # tenantId: '' # only needed if not using cloudCredentialSecretName
-    location: # required (example: eastus)
-    resourceGroup: # required (example: rke2-cluster-rg) - created if missing
-    image: # required (example: canonical:ubuntu-24_04-lts:server-gen1:latest) - publisher:offer:sku:version or the ARM resource ID of a custom image
-    size: # required (example: Standard_D4s_v5)
-    sshUser: # required (example: azureuser)
+    location: # required (Azure region)
+    resourceGroup: # required (created if missing)
+    image: # required (image URN or custom image resource ID)
+    size: # required (VM size)
+    sshUser: # required
     diskSize: 150 # GiB
     managedDisks: true
     storageType: Standard_LRS
-    vnet: '' # (example: rke2-cluster-vnet) - [resourcegroup:]name, created if missing
-    subnet: '' # (example: rke2-cluster-subnet) - created if missing
-    subnetPrefix: '' # (example: 192.168.0.0/16) - RFC 1918 CIDR, only used when creating the subnet
-    # nsg: '' # name or resource ID of an existing NSG - default creates a new NSG per machine
-    # openPort: # port or port/protocol (tcp, udp, *)
+    vnet: '' # created if missing
+    subnet: '' # created if missing
+    subnetPrefix: '' # CIDR for a new subnet
+    # nsg: '' # existing NSG name or resource ID
+    # openPort: # port or port/protocol
     # - "80"
     # - "443/tcp"
     # availabilitySet: ''
-    # availabilityZone: '' # single zone (example: 1) - requires managedDisks and enablePublicIpStandardSku
+    # availabilityZone: '' # needs managedDisks and enablePublicIpStandardSku
     # faultDomainCount: 3
     # updateDomainCount: 5
     # dns: '' # unique DNS label for the public IP address
-    # dockerPort: 2376 # port of the Docker rule added to the created NSG, RKE2 does not use Docker
+    # dockerPort: 2376 # Docker port opened on the created NSG
     # privateIpAddress: ''
     usePrivateIp: false
     noPublicIp: false
     staticPublicIp: false
     # acceleratedNetworking: false
     # enablePublicIpStandardSku: false
-    # plan: '' # publisher:product:plan
-    # tags: '' # comma-separated key,value pairs (example: key1,value1,key2,value2)
+    # plan: '' # purchase plan for the image
+    # tags: '' # comma separated key and value pairs
     # customData: |
       #cloud-config
 
