@@ -28,9 +28,6 @@ spec:
   {{- if .Values.cluster.config.defaultPodSecurityAdmissionConfigurationTemplateName }}
   defaultPodSecurityAdmissionConfigurationTemplateName: {{ .Values.cluster.config.defaultPodSecurityAdmissionConfigurationTemplateName }}
   {{- end }}
-  {{- if .Values.cluster.config.defaultPodSecurityPolicyTemplateName }}
-  defaultPodSecurityPolicyTemplateName: {{ .Values.cluster.config.defaultPodSecurityPolicyTemplateName }}
-  {{- end }}
   enableNetworkPolicy: {{ .Values.cluster.config.enableNetworkPolicy }}
   # fleetAgentDeploymentCustomization:
   {{- if .Values.cluster.config.kubernetesVersion }}
@@ -157,8 +154,8 @@ spec:
       {{- if .Values.cluster.config.globalConfig.kube_apiserver_arg }}
       kube-apiserver-arg: {{ .Values.cluster.config.globalConfig.kube_apiserver_arg | toRawJson }}
       {{- end }}
-      {{- if .Values.cluster.config.globalConfig.kubelet_proxy_arg }}
-      kubelet-proxy-arg: {{ .Values.cluster.config.globalConfig.kubelet_proxy_arg | toRawJson }}
+      {{- if .Values.cluster.config.globalConfig.kube_proxy_arg }}
+      kube-proxy-arg: {{ .Values.cluster.config.globalConfig.kube_proxy_arg | toRawJson }}
       {{- end }}
       {{- if .Values.cluster.config.globalConfig.kubelet_arg }}
       kubelet-arg: {{ .Values.cluster.config.globalConfig.kubelet_arg | toRawJson }}
@@ -297,8 +294,8 @@ spec:
         {{- if .Values.cluster.config.controlPlaneConfig.kube_apiserver_arg }}
         kube-apiserver-arg: {{ .Values.cluster.config.controlPlaneConfig.kube_apiserver_arg | toRawJson }}
         {{- end }}
-        {{- if .Values.cluster.config.controlPlaneConfig.kubelet_proxy_arg }}
-        kubelet-proxy-arg: {{ .Values.cluster.config.controlPlaneConfig.kubelet_proxy_arg | toRawJson }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kube_proxy_arg }}
+        kube-proxy-arg: {{ .Values.cluster.config.controlPlaneConfig.kube_proxy_arg | toRawJson }}
         {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.kubelet_arg }}
         kubelet-arg: {{ .Values.cluster.config.controlPlaneConfig.kubelet_arg | toRawJson }}
@@ -376,8 +373,8 @@ spec:
         {{- if .Values.cluster.config.workerConfig.kube_apiserver_arg }}
         kube-apiserver-arg: {{ .Values.cluster.config.workerConfig.kube_apiserver_arg | toRawJson }}
         {{- end }}
-        {{- if .Values.cluster.config.workerConfig.kubelet_proxy_arg }}
-        kubelet-proxy-arg: {{ .Values.cluster.config.workerConfig.kubelet_proxy_arg | toRawJson }}
+        {{- if .Values.cluster.config.workerConfig.kube_proxy_arg }}
+        kube-proxy-arg: {{ .Values.cluster.config.workerConfig.kube_proxy_arg | toRawJson }}
         {{- end }}
         {{- if .Values.cluster.config.workerConfig.kubelet_arg }}
         kubelet-arg: {{ .Values.cluster.config.workerConfig.kubelet_arg | toRawJson }}
