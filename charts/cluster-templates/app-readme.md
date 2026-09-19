@@ -83,7 +83,7 @@ kubectl annotate secret -n cattle-global-data harvester-creds provisioning.cattl
 #### For Digital Ocean Credentials
 
 ```bash
-kubectl create secret -n cattle-global-data generic digitalocean-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
+kubectl create secret -n cattle-global-data generic --type provisioning.cattle.io/cloud-credential digitalocean-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
 
 kubectl annotate secret -n cattle-global-data digitalocean-creds provisioning.cattle.io/driver=digitalocean
 ```
